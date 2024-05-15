@@ -1,0 +1,4 @@
+.venv/
+test/
+README.md
+.env

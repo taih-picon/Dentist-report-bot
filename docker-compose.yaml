@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME = DENTIS REPORT BOT
+      - ALLOWED_ORIGINS=http://localhost:3000,https://example.com
+      - DATABASE_URL = postgresql://postgres.eyglozmjekrqkohpddyd:asjkhfjahsfajhakjshf@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres
+      - DB_HOST =aws-0-ap-southeast-1.pooler.supabase.com
+      - DB_PORT = 5432
+      - DB_NAME = postgres
+      - DB_USERNAME = postgres.eyglozmjekrqkohpddyd
+      - DB_PASSWORD = asjkhfjahsfajhakjshf
+      - OPENAI_API_KEY = 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
+      - OPENAI_LLM_MODEL=gpt-4-1106-preview

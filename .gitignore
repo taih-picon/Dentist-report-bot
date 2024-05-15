@@ -1,0 +1,10 @@
+.venv/*
+.env
+.env.develop
+.idea/*
+temp
+temp/*
+__pycache__
+__pycache__/*
+NoteBook
+NoteBook/*
