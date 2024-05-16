@@ -40,7 +40,7 @@ class DentisReportController:
                 file_path = os.path.join(upload_folder, uploaded_file.filename)
                 text = speech2report_service.speech_to_text(speech_file_path = file_path)
                 report = speech2report_service.complete_report(DENTIS_REPORT_PROMPT,text)
-                print(report)
+                background_tasks.add_task(remove_file_in_folder, upload_folder)
                 return {"status": "Ok", "code": 200, "data": report}
             except Exception as e:
                 logger.error(f'Erro speech generate answer: {e}')
@@ -48,3 +48,13 @@ class DentisReportController:
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail = "Failed to speech generate answer"
                 )
+        async def remove_file_in_folder(directory):
+            await asyncio.sleep(5)
+            try:
+                for filename in os.listdir(directory):
+                    file_path = os.path.join(directory, filename)
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)
+                        logger.info(f"Removed file: {file_path}")
+            except Exception as e:
+                logger.error(f"Error removing files in directory: {e}")

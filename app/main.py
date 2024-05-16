@@ -1,5 +1,5 @@
 import os
-
+import uvicorn
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,19 +17,12 @@ app.add_middleware(
 )
 router = APIRouter()
 
-# Create Services
-
-# sdlafhalk
-# Create controllers
 dentist_report_controller = DentisReportController(router)
 app.include_router(router)
 @app.get("/")
 async def read_root():
     return {"message": settings.app_name}
-
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, log_level="info", reload=True)
-
     
