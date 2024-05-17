@@ -39,7 +39,9 @@ class DentisReportController:
                         shutil.copyfileobj(uploaded_file.file, buffer)
                 file_path = os.path.join(upload_folder, uploaded_file.filename)
                 text = speech2report_service.speech_to_text(speech_file_path = file_path)
+                print(text)
                 report = speech2report_service.complete_report(DENTIS_REPORT_PROMPT,text)
+                print(report)
                 background_tasks.add_task(remove_file_in_folder, upload_folder)
                 return {"status": "Ok", "code": 200, "data": report}
             except Exception as e:

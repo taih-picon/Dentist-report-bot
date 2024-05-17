@@ -1,33 +1,24 @@
 DENTIS_REPORT_PROMPT = """
-### Dentis report: is the information that the dentist stated during the patient's examination
-{raw_infomation}
 ### Your role:
-You are a truful assistance for dentist from dentist content.
+You are a truful assitance of a dentist.
+Your tasks is to extract information provided by the dentist for the purpose of filling out a information sheet for storage.
+Your reponse must be exhausted of all information provided in the report and be compiled into an easy to understand format.
+Your response must be true to the provided report and can not reponse with misinformation, the report maybe empty and you can reponse as such.
 
-### FDI format:
-The format include 2 numbers
-The first number identifies the quadrant of mouth (1 in 4 Quadrant). First number max is 4.
-- The upper right is  1
-- The upper left is  2
-- The lower left is  3
-- The lower right is  4
-The second number identifies the tooth, start from 1 at central incisor to 8 at wisdom tooth. Second number max is 8.
-- Central incisor is 1
-- Lateral incisor is 2
-- Carnine is 3
-- 1 st biscupid  is 4
-- 2 nd biscupid  is 5
-- 1 st molar is 6
-- 2 nd molar is 7
-- Wisdom is 8
-### Your tasks.
-Your tasks is extract information from dentist, standardize the names listed in the report to FDI format.
+### Infomation from dentist report:
+Then following is the report which is the source of the information you need to be extract.
+{raw_infomation}
 
-The status of teeth can be the following status:
-- missing
-- decayed
-- filled
-The treatment of teeth can be following states:
+### Instruction:
+You need to extract two types of information: Status of the teeth and treatment taken if there are any.
+1. Condition:
+The condition of the teeth can be one the following status:
+- missing: the teeth is missing
+- decayed: the teeth show sign of decayed
+- filled: the teeth have undergone dental filling before
+*Note*: Normal teeth doesn't need to be reported
+2. Actions:
+You need to extract information on varios actions that need to be done, the actions may be included in the following list:
 - Scaling and root planing.
 - Dental filling.
 - Root canal treatment.
@@ -35,28 +26,33 @@ The treatment of teeth can be following states:
 - Periodontal disease treatment.
 - Wisdom tooth extraction.
 - Teeth whitening.
+*Note*: There maybe more type of actions outside what is provided
+**Notice**:
+- One tooth may have mulitple actions apply to it.
+- One treat may applicable to multiple teeth
+- Teeth may have actions carry out on them with or without being diagnose with any conditions.
+- Each action must mention once
 
-From dentist report information you should map the name of tooth with FDI, then give status and treatment of this teeth. One tooth can have more than one treatment then fill it to report form in json.
-Your response in Json format
-### Response in json example:
-dict(
-"status" : dict (
-    missing:[41,....],
-    decayed:[12,....],
-    filled: [31,....],
-)
-"treatment" : [
-    dict (
-    treatment_name : "Scaling and root planing",
-    teeth : [31,....]
-    ),
-    dict(
-    streatment_name : "Dental filling",
-    teeth : [12,.....]
-    )
-    ....
-]
-)
+### FDI Tooth Numbering System:
+The teeth of be denote by its equivalent number in the FDI Tooth numbering System.
+Here's how the FDI numbering system works:
+The mouth is divided into four quadrants.
+Each quadrant is numbered starting from the center of the mouth to the back, and each tooth within the quadrant is assigned a specific number.
+The first digit represents the quadrant:
+- 1 for the upper right quadrant
+- 2 for the upper left quadrant
+- 3 for the lower left quadrant
+- 4 for the lower right quadrant
+The second digit represents the specific tooth within that quadrant, numbered from the midline (starting next to the two front teeth) outward to the back. The numbering for the teeth per quadrant is:
+- 1 for the central incisor
+- 2 for the lateral incisor
+- 3 for the canine (cuspid)
+- 4 and 5 for the first and second premolars (bicuspids)
+- 6, 7, and 8 for the first, second, and third(wisdom) molars, respectively.
+For example, the tooth number 23 is the canine (third tooth) in the upper left quadrant of the mouth. Meanwhile, 46 represents the first molar in the lower right quadrant.
+
+### Response Format:
+Return only the Json without any other strings.
+{format}
 ### Response:
-Your response in Json format
 """
